@@ -12,9 +12,12 @@ Ushbu paket o'zbek tilidagi matnlarni Lotin, Kirill va Yangi Lotin (isloh qiling
 
 ## O'rnatish
 ```bash
-composer update shoyim/latin-to-cyrillic 
+composer require shoyim/latin-to-cyrillic
 ```
-
+## Yangilash
+```bash
+composer update shoyim/latin-to-cyrillic
+```
 
 ## Ishlatish
 ```php
