@@ -9,9 +9,6 @@
     O‘zbek Krill alifbosida shunga mos, ya’ni 30 ta harf va belgi bor.
     O‘zbek Yangi lotin alifbosida ham jami 30 ta harf va belgi bor.
 
-    Yangi lotin yozuvi haqida O‘zbekiston Respublikasi Fanlar akademiyasi tomonidan 'NORMATIV-HUQUQIY HUJJATLAR LOYIHALARI MUHOKAMASI PORTALI'ga muhokamaga qo‘yilgan:
-    https://regulation.gov.uz/oz/d/31596
-
     Harflarni almashtirishda foydalanilgan qoidalar manbalari:
     1. https://uz.wikipedia.org/wiki/Vikipediya:O%CA%BBzbek_lotin_alifbosi_qoidalari
     2. https://uz.wikipedia.org/wiki/Vikipediya:Imlo_va_grammatika
