@@ -1,4 +1,4 @@
-# O'zbek tili uchun Lotin-Kirill-YangiLotin transliterator
+# O'zbek tili uchun Lotin-Kirill-YangiLotin
 
 Ushbu paket o'zbek tilidagi matnlarni Lotin, Kirill va Yangi Lotin (isloh qilingan) alifbolari o'rtasida o'girish uchun mo'ljallangan. Paket Laravel freymvorki uchun Facade va ServiceProvider bilan to'liq integratsiya qilingan.
 
