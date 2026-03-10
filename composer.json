@@ -1,0 +1,31 @@
+{
+    "name": "shoyim/latin-to-cyrillic",
+    "description": "Lotin-Kirill va Kirill-Lotin o'giruvchi paket",
+    "type": "library",
+    "license": "MIT",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Shoyim",
+            "email": "obloqulovshoyim1@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Shoyim\\LatinToCyrillic\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Shoyim\\LatinToCyrillic\\LatinCyrillicServiceProvider"
+            ],
+            "aliases": {
+                "LatinCyrillic": "Shoyim\\LatinToCyrillic\\Facades\\LatinCyrillic"
+            }
+        }
+    },
+    "require": {
+        "php": "^8.0|^8.1|^8.2|^8.3"
+    }
+}
