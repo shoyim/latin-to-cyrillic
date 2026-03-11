@@ -3,7 +3,6 @@
     "description": "Lotin-Kirill va Kirill-Lotin o'giruvchi paket",
     "type": "library",
     "license": "MIT",
-    "version": "1.0.2",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "authors": [
