@@ -4,100 +4,125 @@ namespace Shoyim\LatinToCyrillic;
 
 /**
  * Class Converter
- * * Muallif: Shoyim Obloqulov (github.com/shoyim)
+ * Muallif: Shoyim Obloqulov (github.com/shoyim)
  * Versiya: 1.1.0
- * * Dasturdan o‘zbek tilidagi matnlarni yozuv shaklini almashtirishda
- * va yangi lotin alifbosini joriy qilishda foydalanish mumkin!
- * * O‘zbek Lotin alifbosida 29 harf va bitta tutuq belgi (’) bor.
- * O‘zbek Krill alifbosida shunga mos, ya’ni 30 ta harf va belgi bor.
- * O‘zbek Yangi lotin alifbosida ham jami 30 ta harf va belgi bor.
- * * Harflarni almashtirishda foydalanilgan qoidalar manbalari:
- * 1. https://uz.wikipedia.org/wiki/Vikipediya:O%CA%BBzbek_lotin_alifbosi_qoidalari
- * 2. https://uz.wikipedia.org/wiki/Vikipediya:Imlo_va_grammatika 
  * @package Shoyim\LatinToCyrillic
  */
 class Converter
 {
-    private $latinMap = "AaBbDdFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZz";
-    private $cyrillMap = "АаБбДдФфГгҲҳИиЖжКкЛлМмНнОоПпҚқРрСсТтУуВвХхЙйЗз";
+    private $LotinAlifbo = "AaBbDdFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZz’’";
+    private $KrillAlifbo = "АаБбДдФфГгҲҳИиЖжКкЛлМмНнОоПпҚқРрСсТтУуВвХхЙйЗзЪъ";
+    private $YangiLotinAlifbo = "AaBbDdFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZz’’";
 
-    private function normalizeApostrophes($text)
+    private function changeApostrophe($text)
     {
-        $apostrophes = [chr(39), chr(96), chr(699), chr(700), chr(8216), chr(8217), '’', '‘', '`', "'"];
-        return str_replace($apostrophes, "‘", $text);
+        $search = [chr(39), chr(96), chr(699), chr(700), chr(8217)];
+        $replace = '‘';
+        foreach (['O', 'o', 'G', 'g'] as $char) {
+            foreach ($search as $s) {
+                $text = str_replace($char . $s, $char . $replace, $text);
+            }
+        }
+        return $text;
     }
 
     public function toLatin($text)
     {
-        $text = $this->normalizeApostrophes($text);
-        
-        $map = [
-            'Ў' => 'O‘', 'ў' => 'o‘', 'Ғ' => 'G‘', 'ғ' => 'g‘',
-            'Ш' => 'Sh', 'ш' => 'sh', 'Ч' => 'Ch', 'ч' => 'ch',
-            'Ё' => 'Yo', 'ё' => 'yo', 'Ю' => 'Yu', 'ю' => 'yu',
-            'Я' => 'Ya', 'я' => 'ya', 'Ц' => 'Ts', 'ц' => 'ts', 'Э' => 'E', 'э' => 'e'
-        ];
-
-        $text = preg_replace_callback('/(?<=^|[\s\sАЕИОУЎЪ-])Е/u', fn($m) => 'Ye', $text);
-        $text = preg_replace_callback('/(?<=^|[\s\sАЕИОУЎЪ-])е/u', fn($m) => 'ye', $text);
-        $text = str_replace(['Е', 'е'], ['E', 'e'], $text);
-
-        foreach ($map as $cyr => $lat) {
-            $text = mb_ereg_replace($cyr, $lat, $text);
-        }
-
         $result = "";
-        for ($i = 0; $i < mb_strlen($text); $i++) {
-            $char = mb_substr($text, $i, 1);
-            $pos = mb_strpos($this->cyrillMap, $char);
-            $result .= ($pos !== false) ? mb_substr($this->latinMap, $pos, 1) : $char;
-        }
+        $text = $this->changeApostrophe($text);
+        $len = mb_strlen($text);
+        $isAllUpper = (mb_strtoupper($text, 'UTF-8') === $text);
 
+        for ($i = 0; $i < $len; $i++) {
+            $char = mb_substr($text, $i, 1);
+            $prevChar = ($i > 0) ? mb_substr($text, $i - 1, 1) : null;
+
+            if ($char === 'Е' || $char === 'е') {
+                if ($i === 0 || in_array($prevChar, [' ', 'А', 'E', 'И', 'О', 'У', 'Ў', 'Ъ', '-'])) {
+                    $result .= ($char === 'Е') ? ($isAllUpper ? "YE" : "Ye") : "ye";
+                    continue;
+                }
+            }
+
+            $map = [
+                'Ў' => 'O‘', 'ў' => 'o‘', 'Ғ' => 'G‘', 'ғ' => 'g‘',
+                'Ш' => ($isAllUpper ? 'SH' : 'Sh'), 'ш' => 'sh',
+                'Ч' => ($isAllUpper ? 'CH' : 'Ch'), 'ч' => 'ch',
+                'Ё' => ($isAllUpper ? 'YO' : 'Yo'), 'ё' => 'yo',
+                'Ю' => ($isAllUpper ? 'YU' : 'Yu'), 'ю' => 'yu',
+                'Я' => ($isAllUpper ? 'YA' : 'Ya'), 'я' => 'ya',
+                'Э' => ($char === 'Э' ? 'E' : 'e'), 'э' => 'e'
+            ];
+
+            if ($char === 'Ц' || $char === 'ц') {
+                if ($i > 0 && in_array(mb_strtolower($prevChar), ['а', 'е', 'и', 'о', 'у', 'ў'])) {
+                    $result .= ($char === 'Ц') ? ($isAllUpper ? "TS" : "Ts") : "ts";
+                } else {
+                    $result .= ($char === 'Ц') ? "S" : "s";
+                }
+                continue;
+            }
+
+            if (isset($map[$char])) {
+                $result .= $map[$char];
+            } else {
+                $pos = mb_strpos($this->KrillAlifbo, $char);
+                $result .= ($pos !== false) ? mb_substr($this->LotinAlifbo, $pos, 1) : $char;
+            }
+        }
         return $result;
     }
 
     public function toCyrillic($text)
     {
-        $text = $this->normalizeApostrophes($text);
-        
+        $text = $this->changeApostrophe($text);
+        $isAllUpper = (mb_strtoupper($text, 'UTF-8') === $text);
+
         $complex = [
-            'O‘' => 'Ў', 'o‘' => 'ў', 'G‘' => 'Ғ', 'g‘' => 'ғ',
             'Sh' => 'Ш', 'sh' => 'ш', 'SH' => 'Ш', 'Ch' => 'Ч', 'ch' => 'ч', 'CH' => 'Ч',
             'Yo' => 'Ё', 'yo' => 'ё', 'YO' => 'Ё', 'Yu' => 'Ю', 'yu' => 'ю', 'YU' => 'Ю',
-            'Ya' => 'Я', 'ya' => 'я', 'YA' => 'Я', 'Ts' => 'Ц', 'ts' => 'ц', 'TS' => 'Ц'
+            'Ya' => 'Я', 'ya' => 'я', 'YA' => 'Я', 'Ts' => 'Ц', 'ts' => 'ц', 'TS' => 'Ц',
+            'G‘' => 'Ғ', 'g‘' => 'ғ', 'O‘' => 'Ў', 'o‘' => 'ў',
+            'Ō' => 'Ў', 'ō' => 'ў', 'Ḡ' => 'Ғ', 'ḡ' => 'ғ', 'Ş' => 'Ш', 'ş' => 'ш', 'Ç' => 'Ч', 'ç' => 'ч'
         ];
 
         foreach ($complex as $key => $val) {
             $text = str_replace($key, $val, $text);
         }
 
-        $text = preg_replace_callback('/(?<=^|[\s\sAEIOUaeiou])E/u', fn($m) => 'Э', $text);
-        $text = preg_replace_callback('/(?<=^|[\s\sAEIOUaeiou])e/u', fn($m) => 'э', $text);
-
         $len = mb_strlen($text);
-        $result = "";
+        $tempResult = "";
+
         for ($i = 0; $i < $len; $i++) {
             $char = mb_substr($text, $i, 1);
-            $pos = mb_strpos($this->latinMap, $char);
-            if ($pos !== false) {
-                $result .= mb_substr($this->cyrillMap, $pos, 1);
-            } elseif ($char === '‘' || $char === '’') {
-                $result .= 'ъ';
+            $prevChar = ($i > 0) ? mb_substr($text, $i - 1, 1) : null;
+
+            if (mb_strtolower($char) === 'e' && ($i === 0 || $prevChar === ' ' || in_array(mb_strtolower($prevChar), ['a', 'e', 'i', 'o', 'u']))) {
+                $tempResult .= ($char === 'E') ? 'Э' : 'э';
             } else {
-                $result .= $char;
+                $pos = mb_strpos($this->LotinAlifbo, $char);
+                $tempResult .= ($pos !== false) ? mb_substr($this->KrillAlifbo, $pos, 1) : $char;
             }
         }
 
-        return $result;
+        $apostrophes = [chr(39), chr(96), chr(699), chr(700), '‘', '’'];
+        foreach ($apostrophes as $ap) {
+            $tempResult = str_replace($ap, ($isAllUpper ? 'Ъ' : 'ъ'), $tempResult);
+        }
+
+        return $tempResult;
     }
 
     public function toNewLatin($text)
     {
         $text = $this->toLatin($text);
         $map = [
-            'O‘' => 'Õ', 'o‘' => 'õ', 'G‘' => 'Ğ', 'g‘' => 'ğ',
+            'O‘' => 'Ō', 'o‘' => 'ō', 'G‘' => 'Ḡ', 'g‘' => 'ḡ',
             'Sh' => 'Ş', 'sh' => 'ş', 'Ch' => 'Ç', 'ch' => 'ç'
         ];
-        return str_replace(array_keys($map), array_values($map), $text);
+        foreach ($map as $key => $val) {
+            $text = str_replace($key, $val, $text);
+        }
+        return $text;
     }
 }
