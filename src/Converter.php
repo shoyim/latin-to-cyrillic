@@ -1,22 +1,25 @@
-<!-- 
-Muallif: Shoyim Obloqulov (github.com/shoyim)
-Versiya: 1.0.0
-
-Dasturdan o‘zbek tilidagi matnlarni yozuv shaklini almashtirishda
-va yangi lotin alifbosini joriy qilishda foydalanish mumkin!
-
-O‘zbek Lotin alifbosida 29 harf va bitta tutuq belgi (’) bor.
-O‘zbek Krill alifbosida shunga mos, ya’ni 30 ta harf va belgi bor.
-O‘zbek Yangi lotin alifbosida ham jami 30 ta harf va belgi bor.
-
-Harflarni almashtirishda foydalanilgan qoidalar manbalari:
-1. https://uz.wikipedia.org/wiki/Vikipediya:O%CA%BBzbek_lotin_alifbosi_qoidalari
-2. https://uz.wikipedia.org/wiki/Vikipediya:Imlo_va_grammatika 
--->
 <?php
 
 namespace Shoyim\LatinToCyrillic;
 
+/**
+ * Class Converter
+ * 
+ * Muallif: Shoyim Obloqulov (github.com/shoyim)
+ * Versiya: 1.0.0
+
+ * Dasturdan o‘zbek tilidagi matnlarni yozuv shaklini almashtirishda
+ * va yangi lotin alifbosini joriy qilishda foydalanish mumkin!
+
+ * O‘zbek Lotin alifbosida 29 harf va bitta tutuq belgi (’) bor.
+ * O‘zbek Krill alifbosida shunga mos, ya’ni 30 ta harf va belgi bor.
+ * O‘zbek Yangi lotin alifbosida ham jami 30 ta harf va belgi bor.
+
+ * Harflarni almashtirishda foydalanilgan qoidalar manbalari:
+ * 1. https://uz.wikipedia.org/wiki/Vikipediya:O%CA%BBzbek_lotin_alifbosi_qoidalari
+ * 2. https://uz.wikipedia.org/wiki/Vikipediya:Imlo_va_grammatika 
+ * @package Shoyim\LatinToCyrillic
+ */
 class Converter
 {
     private $LotinAlifbo = "AaBbDdFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZz’’";
