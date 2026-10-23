@@ -1,7 +1,7 @@
 {
     "name": "shoyim/latin-to-cyrillic",
     "description": "O'zbek tili uchun Lotin - Kirill - Yangi lotin transliteratsiya paketi (Laravel bilan integratsiya)",
-    "keywords": ["uzbek", "o'zbek", "lotin", "kirill", "cyrillic", "latin", "transliteration", "transliteratsiya", "laravel", "alifbo"],
+    "keywords": ["uzbek", "ozbek", "lotin", "kirill", "cyrillic", "latin", "transliteration", "transliteratsiya", "laravel", "alifbo"],
     "homepage": "https://github.com/shoyim/latin-to-cyrillic",
     "type": "library",
     "license": "MIT",
