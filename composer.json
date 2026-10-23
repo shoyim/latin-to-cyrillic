@@ -1,19 +1,25 @@
 {
     "name": "shoyim/latin-to-cyrillic",
-    "description": "Lotin-Kirill va Kirill-Lotin o'giruvchi paket",
+    "description": "O'zbek tili uchun Lotin - Kirill - Yangi lotin transliteratsiya paketi (Laravel bilan integratsiya)",
+    "keywords": ["uzbek", "o'zbek", "lotin", "kirill", "cyrillic", "latin", "transliteration", "transliteratsiya", "laravel", "alifbo"],
+    "homepage": "https://github.com/shoyim/latin-to-cyrillic",
     "type": "library",
     "license": "MIT",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "authors": [
         {
-            "name": "Shoyim",
-            "email": "obloqulovshoyim1@gmail.com"
+            "name": "Shoyim Obloqulov",
+            "email": "obloqulovshoyim1@gmail.com",
+            "homepage": "https://github.com/shoyim"
         }
     ],
     "autoload": {
         "psr-4": {
             "Shoyim\\LatinToCyrillic\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Shoyim\\LatinToCyrillic\\Tests\\": "tests/"
         }
     },
     "extra": {
@@ -27,6 +33,15 @@
         }
     },
     "require": {
-        "php": "^8.0|^8.1|^8.2|^8.3"
-    }
+        "php": ">=7.0",
+        "ext-mbstring": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6 || ^10.5 || ^11.0"
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
